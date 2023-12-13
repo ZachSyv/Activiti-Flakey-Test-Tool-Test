@@ -276,6 +276,13 @@
     </pluginRepository>
   </pluginRepositories>
   <build>
+    <extensions>
+      <extension>
+        <groupId>org.deflaker</groupId>
+        <artifactId>deflaker-maven-extension</artifactId>
+        <version>1.5-SNAPSHOT</version>
+      </extension>
+    </extensions>
     <pluginManagement>
       <plugins>
         <plugin>
@@ -795,6 +802,13 @@ limitations under the License.
             </executions>
           </plugin>
         </plugins>
+        <extensions>
+          <extension>
+            <groupId>org.deflaker</groupId>
+            <artifactId>deflaker-maven-extension</artifactId>
+            <version>1.5-SNAPSHOT</version>
+          </extension>
+        </extensions>
       </build>
       <reporting>
         <plugins>
@@ -846,6 +860,13 @@ limitations under the License.
             </executions>
           </plugin>
         </plugins>
+        <extensions>
+          <extension>
+            <groupId>org.deflaker</groupId>
+            <artifactId>deflaker-maven-extension</artifactId>
+            <version>1.5-SNAPSHOT</version>
+          </extension>
+        </extensions>
       </build>
       <distributionManagement>
         <repository>
@@ -863,6 +884,13 @@ limitations under the License.
         </property>
       </activation>
       <build>
+        <extensions>
+          <extension>
+            <groupId>org.deflaker</groupId>
+            <artifactId>deflaker-maven-extension</artifactId>
+            <version>1.5-SNAPSHOT</version>
+          </extension>
+        </extensions>
         <pluginManagement>
           <plugins>
             <plugin>
@@ -901,6 +929,13 @@ limitations under the License.
     <profile>
       <id>dependency-check</id>
       <build>
+        <extensions>
+          <extension>
+            <groupId>org.deflaker</groupId>
+            <artifactId>deflaker-maven-extension</artifactId>
+            <version>1.5-SNAPSHOT</version>
+          </extension>
+        </extensions>
         <plugins>
           <plugin>
             <groupId>org.owasp</groupId>
