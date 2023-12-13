@@ -1,0 +1,64 @@
+name: CI
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # - uses: actions/cache@704facf57e6136b1bc63b828d79edcd491f0ee84 # v3.3.2
+      #   with:
+      #     path: ~/.m2/repository
+      #     key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-maven-
+
+      - name: Setup Java JDK 17
+        uses: actions/setup-java@387ac29b308b003ca37ba93a6cab5eb57c8f5f93 # 4.0.0
+        with:
+          java-version: 17
+          distribution: 'temurin'
+
+      # - uses: Alfresco/alfresco-build-tools/.github/actions/update-pom-to-next-pre-release@042fc28b3e308e1d1159dfee61bc46c5940ed7b6 # v5.4.0
+      #   id: update-pom-to-next-version
+      #   if: github.event_name == 'push'
+
+      # - name: Update VERSION file
+      #   if: github.event_name == 'push'
+      #   run: |
+      #     echo ${{steps.update-pom-to-next-version.outputs.next-prerelease}} > VERSION
+
+      # - name: Set preview version
+      #   if: ${{ github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'preview') }}
+      #   run: |
+      #     GITHUB_PR_NUMBER=PR-${{ github.event.pull_request.number }}
+      #     echo 0.0.1-${GITHUB_PR_NUMBER}-${GITHUB_RUN_NUMBER}-SNAPSHOT > VERSION
+
+      # - name: Set VERSION env variable
+      #   if: ${{ github.event_name == 'push' || (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'preview')) }}
+      #   run: |
+      #     VERSION=$(cat VERSION)
+      #     echo set VERSION=$VERSION
+      #     echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      # - name: Update pom files to the new version
+      #   if: ${{ github.event_name == 'pull_request' && (contains(github.head_ref, 'preview') || contains(github.event.pull_request.labels.*.name, 'preview')) }}
+      #   run: mvn -B versions:set -DnewVersion=$VERSION -DprocessAllModules=true -DgenerateBackupPoms=false
+
+      - name: Maven install
+        run: mvn install
+
+      - name: Build and Test with Maven (and maybe Deploy)
+        shell: bash
+        #run: mvn edu.illinois.cs:idflakies-maven-plugin:2.0.0:detect -Ddetector.detector_type=random-class-method -Ddt.randomize.rounds=10 -Ddt.detector.original_order.all_must_pass=false
+        run: mvn verify
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-results
+          path: ${{ github.workspace}}
